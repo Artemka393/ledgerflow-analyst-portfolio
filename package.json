@@ -1,0 +1,20 @@
+{
+  "name": "ledgerflow-analyst-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio project for a Junior Fullstack Analyst vacancy: finance process automation, REST API, requirements, SQL and documentation.",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js",
+    "test": "node tests/api-contract.test.js"
+  },
+  "keywords": [
+    "business-analysis",
+    "system-analysis",
+    "rest-api",
+    "sql",
+    "finance-automation"
+  ],
+  "author": "Artem Shestak",
+  "license": "MIT"
+}

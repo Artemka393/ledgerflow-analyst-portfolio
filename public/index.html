@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LedgerFlow | Портал аналитика</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Навигация">
+        <div class="brand">
+          <span class="brand-mark">LF</span>
+          <div>
+            <p class="brand-name">LedgerFlow</p>
+            <p class="brand-meta">финансовый контур</p>
+          </div>
+        </div>
+
+        <nav class="nav-tabs" id="navTabs">
+          <button class="nav-tab is-active" type="button" data-tab="dashboard">Контроль</button>
+          <button class="nav-tab" type="button" data-tab="requirements">Требования</button>
+          <button class="nav-tab" type="button" data-tab="integrations">Интеграции</button>
+          <button class="nav-tab" type="button" data-tab="docs">Артефакты</button>
+        </nav>
+
+        <div class="sidebar-block">
+          <p class="sidebar-label">Стейкхолдеры</p>
+          <div id="stakeholdersList" class="stakeholders-list"></div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Кейс Junior Fullstack-аналитика</p>
+            <h1>Контур согласования счетов</h1>
+          </div>
+          <div class="topbar-actions">
+            <a class="link-button" href="/docs/requirements.md" target="_blank" rel="noreferrer">ТЗ</a>
+            <a class="link-button" href="/docs/openapi.yaml" target="_blank" rel="noreferrer">OpenAPI</a>
+          </div>
+        </header>
+
+        <section class="tab-panel is-active" data-panel="dashboard">
+          <div class="metric-grid" id="metricGrid"></div>
+
+          <div class="work-grid">
+            <section class="panel panel-wide">
+              <div class="panel-header">
+                <div>
+                  <p class="section-kicker">Счета</p>
+                  <h2>Реестр счетов</h2>
+                </div>
+                <div class="filters">
+                  <label>
+                    Статус
+                    <select id="statusFilter">
+                      <option value="all">Все</option>
+                      <option value="draft">Черновик</option>
+                      <option value="needs_review">На проверке</option>
+                      <option value="approved">Согласован</option>
+                      <option value="paid">Оплачен</option>
+                    </select>
+                  </label>
+                  <label>
+                    Риск
+                    <select id="riskFilter">
+                      <option value="all">Все</option>
+                      <option value="high">Высокий</option>
+                      <option value="medium">Средний</option>
+                      <option value="low">Низкий</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Счет</th>
+                      <th>Поставщик</th>
+                      <th>ЦФО</th>
+                      <th>Сумма</th>
+                      <th>Срок</th>
+                      <th>Статус</th>
+                      <th>Совпадение</th>
+                    </tr>
+                  </thead>
+                  <tbody id="invoiceTable"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <aside class="panel detail-panel" id="invoiceDetail"></aside>
+          </div>
+
+          <div class="lower-grid">
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <p class="section-kicker">Сверка</p>
+                  <h2>Сверка</h2>
+                </div>
+              </div>
+              <div id="reconciliationList" class="reconciliation-list"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <p class="section-kicker">Активность</p>
+                  <h2>Журнал</h2>
+                </div>
+              </div>
+              <div id="activityList" class="activity-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="tab-panel" data-panel="requirements">
+          <div class="section-title">
+            <div>
+              <p class="section-kicker">Бэклог</p>
+              <h2>Требования и критерии приемки</h2>
+            </div>
+          </div>
+          <div class="requirements-grid" id="requirementsGrid"></div>
+        </section>
+
+        <section class="tab-panel" data-panel="integrations">
+          <div class="split-layout">
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <p class="section-kicker">API</p>
+                  <h2>REST-контракт</h2>
+                </div>
+              </div>
+              <div class="endpoint-list" id="endpointList"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <p class="section-kicker">Ответ API</p>
+                  <h2>Пример ответа</h2>
+                </div>
+              </div>
+              <pre class="code-block" id="apiSample"></pre>
+            </section>
+          </div>
+        </section>
+
+        <section class="tab-panel" data-panel="docs">
+          <div class="docs-grid">
+            <a class="doc-tile" href="/docs/requirements.md" target="_blank" rel="noreferrer">
+              <span class="doc-type">MD</span>
+              <strong>Требования</strong>
+              <span>ФТ, НФТ, пользовательские истории, BPMN/UML</span>
+            </a>
+            <a class="doc-tile" href="/docs/openapi.yaml" target="_blank" rel="noreferrer">
+              <span class="doc-type">YAML</span>
+              <strong>OpenAPI</strong>
+              <span>Контракт REST API</span>
+            </a>
+            <a class="doc-tile" href="/docs/sql/schema.sql" target="_blank" rel="noreferrer">
+              <span class="doc-type">SQL</span>
+              <strong>Схема данных</strong>
+              <span>Модель данных</span>
+            </a>
+            <a class="doc-tile" href="/docs/sql/queries.sql" target="_blank" rel="noreferrer">
+              <span class="doc-type">SQL</span>
+              <strong>Запросы</strong>
+              <span>Аналитические запросы</span>
+            </a>
+          </div>
+
+          <section class="panel process-panel">
+            <div class="panel-header">
+              <div>
+                <p class="section-kicker">BPMN-схема</p>
+                <h2>Поток обработки</h2>
+              </div>
+            </div>
+            <div class="process-flow">
+              <div>Получение счета</div>
+              <div>Проверка реквизитов</div>
+              <div>Сверка с договором</div>
+              <div>Согласование</div>
+              <div>Оплата</div>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

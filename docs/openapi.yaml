@@ -1,0 +1,309 @@
+openapi: 3.0.3
+info:
+  title: LedgerFlow API
+  version: 1.0.0
+  description: REST API for invoice intake, reconciliation monitoring and analyst requirements.
+servers:
+  - url: http://localhost:5173
+paths:
+  /api/health:
+    get:
+      summary: Check service health
+      responses:
+        "200":
+          description: Service is available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  service:
+                    type: string
+                    example: ledgerflow-api
+  /api/summary:
+    get:
+      summary: Get dashboard summary
+      responses:
+        "200":
+          description: Dashboard metrics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Summary"
+  /api/invoices:
+    get:
+      summary: Get invoice list
+      parameters:
+        - in: query
+          name: status
+          schema:
+            $ref: "#/components/schemas/InvoiceStatus"
+          required: false
+        - in: query
+          name: risk
+          schema:
+            $ref: "#/components/schemas/Risk"
+          required: false
+      responses:
+        "200":
+          description: Invoice collection
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Invoice"
+  /api/invoices/{invoiceId}:
+    get:
+      summary: Get invoice by ID
+      parameters:
+        - $ref: "#/components/parameters/InvoiceId"
+      responses:
+        "200":
+          description: Invoice
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invoice"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /api/invoices/{invoiceId}/status:
+    patch:
+      summary: Update invoice status
+      parameters:
+        - $ref: "#/components/parameters/InvoiceId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  $ref: "#/components/schemas/InvoiceStatus"
+                comment:
+                  type: string
+                  maxLength: 140
+                  example: Approved by client representative.
+      responses:
+        "200":
+          description: Updated invoice
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invoice"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          description: Invalid status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/reconciliations:
+    get:
+      summary: Get reconciliation rows
+      responses:
+        "200":
+          description: Reconciliation collection
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Reconciliation"
+  /api/requirements:
+    get:
+      summary: Get requirements backlog
+      responses:
+        "200":
+          description: Requirements collection
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Requirement"
+components:
+  parameters:
+    InvoiceId:
+      in: path
+      name: invoiceId
+      required: true
+      schema:
+        type: string
+      example: INV-2026-0418
+  responses:
+    NotFound:
+      description: Resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+  schemas:
+    InvoiceStatus:
+      type: string
+      enum:
+        - draft
+        - needs_review
+        - approved
+        - paid
+    Risk:
+      type: string
+      enum:
+        - low
+        - medium
+        - high
+    Summary:
+      type: object
+      required:
+        - openInvoices
+        - totalOpenAmount
+        - atRiskCount
+        - averageMatchingScore
+        - reconciliationVariance
+      properties:
+        openInvoices:
+          type: integer
+          example: 4
+        totalOpenAmount:
+          type: number
+          example: 713700
+        atRiskCount:
+          type: integer
+          example: 2
+        averageMatchingScore:
+          type: integer
+          example: 80
+        reconciliationVariance:
+          type: number
+          example: 14500
+    Invoice:
+      type: object
+      required:
+        - id
+        - supplier
+        - amount
+        - currency
+        - dueDate
+        - status
+      properties:
+        id:
+          type: string
+          example: INV-2026-0418
+        supplier:
+          type: string
+          example: Alpha Logistics
+        inn:
+          type: string
+          example: "7708123456"
+        costCenter:
+          type: string
+          example: Operations
+        amount:
+          type: number
+          example: 184500
+        currency:
+          type: string
+          example: RUB
+        dueDate:
+          type: string
+          format: date
+          example: "2026-05-06"
+        status:
+          $ref: "#/components/schemas/InvoiceStatus"
+        risk:
+          $ref: "#/components/schemas/Risk"
+        owner:
+          type: string
+          example: A. Petrova
+        contract:
+          type: string
+          example: CTR-LOG-24
+        matchingScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 62
+        apiSource:
+          type: string
+          example: EDI
+        comments:
+          type: array
+          items:
+            type: string
+    Reconciliation:
+      type: object
+      properties:
+        id:
+          type: string
+          example: REC-AP-0426
+        area:
+          type: string
+          example: Accounts payable
+        systemBalance:
+          type: number
+          example: 755800
+        bankBalance:
+          type: number
+          example: 741300
+        variance:
+          type: number
+          example: 14500
+        status:
+          type: string
+          example: attention
+        lastSync:
+          type: string
+          format: date-time
+    Requirement:
+      type: object
+      properties:
+        id:
+          type: string
+          example: REQ-01
+        type:
+          type: string
+          enum:
+            - functional
+            - non-functional
+        priority:
+          type: string
+          enum:
+            - must
+            - should
+            - could
+        status:
+          type: string
+          example: approved
+        title:
+          type: string
+        acceptanceCriteria:
+          type: array
+          items:
+            type: string
+    ErrorEnvelope:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            details:
+              nullable: true
+

@@ -1,0 +1,216 @@
+{
+  "product": {
+    "name": "LedgerFlow",
+    "description": "Внутренний инструмент для приема счетов, сверки документов и подготовки оплат в бухгалтерском аутсорсинге.",
+    "domain": "Автоматизация бухгалтерского и финансового учета"
+  },
+  "stakeholders": [
+    {
+      "role": "Бухгалтер",
+      "goal": "Быстро проверять входящие счета и находить недостающие первичные документы."
+    },
+    {
+      "role": "Финансовый менеджер",
+      "goal": "Приоритизировать оплаты по риску, сроку и статусу сверки."
+    },
+    {
+      "role": "Представитель клиента",
+      "goal": "Видеть прозрачную историю согласований без пересылки таблиц по почте."
+    },
+    {
+      "role": "Разработчик",
+      "goal": "Работать со стабильными API-контрактами и понятными критериями приемки."
+    }
+  ],
+  "invoices": [
+    {
+      "id": "INV-2026-0418",
+      "supplier": "Альфа Логистика",
+      "inn": "7708123456",
+      "costCenter": "Операции",
+      "amount": 184500,
+      "currency": "RUB",
+      "dueDate": "2026-05-06",
+      "status": "needs_review",
+      "risk": "high",
+      "owner": "А. Петрова",
+      "contract": "CTR-LOG-24",
+      "matchingScore": 62,
+      "apiSource": "EDI",
+      "comments": [
+        "Сумма отличается от акта поставки на 14500 RUB.",
+        "Нужно подтверждение клиента перед оплатой."
+      ]
+    },
+    {
+      "id": "INV-2026-0421",
+      "supplier": "Клауд Стэк",
+      "inn": "7729011122",
+      "costCenter": "ИТ",
+      "amount": 87300,
+      "currency": "RUB",
+      "dueDate": "2026-05-03",
+      "status": "approved",
+      "risk": "medium",
+      "owner": "Д. Соколов",
+      "contract": "CTR-SAAS-18",
+      "matchingScore": 91,
+      "apiSource": "API банка",
+      "comments": [
+        "Акт и счет успешно сопоставлены.",
+        "Оплата добавлена в ближайший платежный пакет."
+      ]
+    },
+    {
+      "id": "INV-2026-0427",
+      "supplier": "Север Офис Аренда",
+      "inn": "7714555901",
+      "costCenter": "Администрация",
+      "amount": 312000,
+      "currency": "RUB",
+      "dueDate": "2026-05-10",
+      "status": "draft",
+      "risk": "low",
+      "owner": "М. Орлова",
+      "contract": "CTR-RENT-09",
+      "matchingScore": 78,
+      "apiSource": "Ручная загрузка",
+      "comments": [
+        "Ожидается скан подписанного акта."
+      ]
+    },
+    {
+      "id": "INV-2026-0430",
+      "supplier": "Сигма Консалтинг",
+      "inn": "7733098765",
+      "costCenter": "Финансы",
+      "amount": 129900,
+      "currency": "RUB",
+      "dueDate": "2026-05-08",
+      "status": "needs_review",
+      "risk": "medium",
+      "owner": "А. Петрова",
+      "contract": "CTR-CONS-31",
+      "matchingScore": 70,
+      "apiSource": "Портал клиента",
+      "comments": [
+        "В первичном документе не указан код проекта."
+      ]
+    },
+    {
+      "id": "INV-2026-0501",
+      "supplier": "Вектор Принт",
+      "inn": "7720444433",
+      "costCenter": "Маркетинг",
+      "amount": 42100,
+      "currency": "RUB",
+      "dueDate": "2026-05-12",
+      "status": "paid",
+      "risk": "low",
+      "owner": "Д. Соколов",
+      "contract": "CTR-MKT-05",
+      "matchingScore": 98,
+      "apiSource": "API банка",
+      "comments": [
+        "Оплачено в платежном пакете PAY-2026-0501."
+      ]
+    }
+  ],
+  "reconciliations": [
+    {
+      "id": "REC-AR-0426",
+      "area": "Дебиторская задолженность",
+      "systemBalance": 1867200,
+      "bankBalance": 1867200,
+      "variance": 0,
+      "status": "matched",
+      "lastSync": "2026-05-01T08:40:00+03:00"
+    },
+    {
+      "id": "REC-AP-0426",
+      "area": "Кредиторская задолженность",
+      "systemBalance": 755800,
+      "bankBalance": 741300,
+      "variance": 14500,
+      "status": "attention",
+      "lastSync": "2026-05-01T08:42:00+03:00"
+    },
+    {
+      "id": "REC-TAX-0426",
+      "area": "Регистр НДС",
+      "systemBalance": 284300,
+      "bankBalance": 284300,
+      "variance": 0,
+      "status": "matched",
+      "lastSync": "2026-05-01T08:45:00+03:00"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-01",
+      "type": "functional",
+      "priority": "must",
+      "status": "approved",
+      "title": "Импортировать счета из ЭДО, API банка и ручной загрузки",
+      "acceptanceCriteria": [
+        "Система сохраняет поставщика, сумму, срок оплаты, договор и источник.",
+        "Дубли счетов отклоняются с понятной ошибкой."
+      ]
+    },
+    {
+      "id": "REQ-02",
+      "type": "functional",
+      "priority": "must",
+      "status": "approved",
+      "title": "Показывать отклонения сверки по финансовым зонам",
+      "acceptanceCriteria": [
+        "Отклонение равно балансу в системе минус баланс банка.",
+        "Строки с ненулевым отклонением помечаются как требующие внимания."
+      ]
+    },
+    {
+      "id": "REQ-03",
+      "type": "non-functional",
+      "priority": "should",
+      "status": "draft",
+      "title": "Держать время ответа API дашборда ниже 300 мс",
+      "acceptanceCriteria": [
+        "GET /api/summary отвечает быстрее 300 мс на тестовых данных из 1000 счетов.",
+        "Ошибки возвращаются в едином JSON-формате."
+      ]
+    },
+    {
+      "id": "REQ-04",
+      "type": "functional",
+      "priority": "could",
+      "status": "in_review",
+      "title": "Позволить аналитику менять статус счета с комментарием",
+      "acceptanceCriteria": [
+        "Допустимые статусы: draft, needs_review, approved и paid.",
+        "Каждая смена статуса добавляет аудиторский комментарий."
+      ]
+    }
+  ],
+  "activity": [
+    {
+      "time": "09:10",
+      "actor": "А. Петрова",
+      "event": "Перевела INV-2026-0418 в статус «На проверке»"
+    },
+    {
+      "time": "09:24",
+      "actor": "API банка",
+      "event": "Обновлена сверка REC-AP-0426"
+    },
+    {
+      "time": "10:05",
+      "actor": "Д. Соколов",
+      "event": "Согласовал INV-2026-0421 для платежного пакета"
+    },
+    {
+      "time": "10:20",
+      "actor": "Портал клиента",
+      "event": "Загружен счет INV-2026-0430"
+    }
+  ]
+}
