@@ -1,7 +1,7 @@
 {
   "name": "ledgerflow-analyst-portfolio",
   "version": "1.0.0",
-  "description": "Portfolio project for a Junior Fullstack Analyst vacancy: finance process automation, REST API, requirements, SQL and documentation.",
+  "description": "Учебный fullstack-проект для автоматизации финансового процесса: счета, сверки, REST API, SQL и документация.",
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",

@@ -1,37 +1,67 @@
 # LedgerFlow
 
-Portfolio project for the **Junior Fullstack Analyst** vacancy at a finance/accounting automation company.
+Учебный fullstack-проект для автоматизации работы со счетами, сверками и согласованием оплат.
 
-The project demonstrates how a junior analyst can connect business requirements with a working technical prototype:
+Я сделал этот проект, чтобы потренироваться на задаче из финансовой предметной области: разобрать бизнес-процесс, оформить требования, описать REST API, продумать простую модель данных и собрать рабочий прототип интерфейса.
 
-- business and system requirements;
-- user stories and acceptance criteria;
-- REST API contract;
-- basic SQL data model and analytical queries;
-- BPMN/UML documentation;
-- small fullstack implementation without external dependencies.
+## Что делает проект
 
-## Scenario
+LedgerFlow имитирует внутренний инструмент для бухгалтерии или финансового отдела. В нем можно:
 
-LedgerFlow is an internal tool for outsourced accounting teams. It helps analysts and accountants process incoming invoices, check document matching, monitor reconciliation variance and prepare invoices for payment approval.
+- смотреть список входящих счетов;
+- фильтровать счета по статусу и уровню риска;
+- открывать карточку счета с деталями и комментариями;
+- менять статус счета через API;
+- видеть показатели по открытым счетам, рискам и сверкам;
+- смотреть требования, API-контракт и SQL-документацию.
 
-## Run
+## Что я реализовал
+
+- Frontend-интерфейс на HTML, CSS и JavaScript.
+- Backend на Node.js без внешних зависимостей.
+- REST API для счетов, сверок, требований и активности.
+- Демо-данные по финансовому процессу.
+- OpenAPI-описание API.
+- SQL-схему и примеры аналитических запросов.
+- Документацию с требованиями, user stories, BPMN и UML.
+- Простые контрактные тесты API.
+
+## Стек
+
+- HTML
+- CSS
+- JavaScript
+- Node.js
+- REST API
+- JSON
+- SQL
+- OpenAPI
+- Mermaid diagrams
+
+## Как запустить
 
 ```bash
 npm start
 ```
 
-Open:
+После запуска проект будет доступен по адресу:
 
 ```text
 http://localhost:5173
 ```
 
-## Test
+## Тесты
 
 ```bash
 npm test
 ```
+
+Тесты проверяют основные API-сценарии:
+
+- получение сводных показателей;
+- фильтрацию счетов;
+- изменение статуса счета;
+- валидацию недопустимого статуса.
 
 ## API
 
@@ -48,21 +78,19 @@ GET    /api/stakeholders
 GET    /api/activity
 ```
 
-## Analyst Artifacts
+## Документация
 
-- [Requirements](docs/requirements.md)
-- [OpenAPI](docs/openapi.yaml)
-- [SQL schema](docs/sql/schema.sql)
-- [SQL queries](docs/sql/queries.sql)
+- [Требования и user stories](docs/requirements.md)
+- [OpenAPI-контракт](docs/openapi.yaml)
+- [SQL-схема](docs/sql/schema.sql)
+- [SQL-запросы](docs/sql/queries.sql)
 
-## Vacancy Fit
+## Что показывает проект
 
-This project maps directly to the vacancy requirements:
+Этот проект показывает не только верстку и API, но и аналитическую часть:
 
-- **Business requirements:** finance workflow, stakeholders, process decomposition.
-- **System analysis:** REST resources, status transitions, integration boundaries.
-- **API:** OpenAPI contract, JSON payloads, route validation.
-- **SQL:** schema and queries for invoice control and reconciliation.
-- **Documentation:** ТЗ-style requirements, user stories, BPMN/UML diagrams.
-- **Fullstack:** Node.js API plus browser interface.
-
+- как разложить финансовый процесс на сущности и статусы;
+- как оформить функциональные и нефункциональные требования;
+- как описать API до реализации;
+- как связать интерфейс, backend и данные;
+- как подготовить документацию, понятную разработчику и заказчику.
